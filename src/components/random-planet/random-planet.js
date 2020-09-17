@@ -3,6 +3,7 @@ import SwapiService from '../../services/swapi-serveces';
 import './random-planet.css';
 import Spinner from '../spinner';
 import Errorbountry from '../error-bountry';
+import PropsTypes from 'prop-types';
 
 
 export default class RandomPlanet extends Component {
@@ -12,11 +13,17 @@ export default class RandomPlanet extends Component {
 		loading: true
 		
 	};
-
+	static defaultProps = {
+		updateInterval: 7000
+	}
+	static propsTypes = {
+		updateInterval: PropsTypes.number
+	}
 
 	componentDidMount(){
+		const {updateInterval} = this.props;
 		this.updatePlanet();
-		this.interval = setInterval(this.updatePlanet, 1500);
+		this.interval = setInterval(this.updatePlanet, updateInterval);
 	}
 
 	componentWillUnmount(){
@@ -38,7 +45,7 @@ export default class RandomPlanet extends Component {
 			.getPlanet(id)
 			.then(this.onPlanetLoaded)
 	}
-
+	
 	render() {
 	
 	const {planet, loading } = this.state;	
@@ -46,7 +53,7 @@ export default class RandomPlanet extends Component {
 	const spinner = loading ? <Spinner/> : null;
 	const content = hasData ? <PlanetVie planet={planet}/> : null;
 	
-
+	
 	
 
 	return (
@@ -62,12 +69,14 @@ export default class RandomPlanet extends Component {
 	}
 }
 
+
+
 const PlanetVie = ({planet}) => {
 	const {id, name, population, rotationPeriod, diameter} = planet;
 	return(
 		<React.Fragment>
 				<img className="planet-image"
-				src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} />
+				src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} alt={name} />
 				<div>
 					<h4>{name}</h4>
 					<ul className="list-group list-group-flush">

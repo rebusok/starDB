@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SwapiService from '../../services/swapi-serveces';
 import './item-details.css';
-import Spinner from '../spinner';
+
 
 
 const Record = ({item, field, label}) => {
@@ -22,8 +22,7 @@ export default class ItemDetails extends Component {
     swapiService = new SwapiService();
 
     state = {
-        item: {},
-        loading: true,
+        item: null,        
         image: null
     }   
     
@@ -32,7 +31,9 @@ export default class ItemDetails extends Component {
     }
 
     componentDidUpdate(prevProps){
-        if (this.props.itemId !== prevProps.itemId){
+        if (this.props.itemId !== prevProps.itemId || 
+            this.props.getData !== prevProps.getData ||
+            this.props.getImageUrl !== prevProps.getImageUrl){
             this.updateItem();
         }
     }
@@ -47,8 +48,7 @@ export default class ItemDetails extends Component {
             .then((item) => {
                 this.setState({
                   item,
-                  image: getImageUrl(item),
-                  loading: false
+                  image: getImageUrl(item)                  
                 });                
               });
               
@@ -56,22 +56,15 @@ export default class ItemDetails extends Component {
     }
 
     render() {
-        const {item, loading, image} = this.state;
+        const {item, image} = this.state;
         
         if(!item){
             return <span>Select a person from a list</span>
-        }
-
-        const hasData = !(loading);        
-        const spinner = loading ? <Spinner/> : null;
-        const content = hasData ? <ItemVie item={item} image={image} children={this.props.children}/> : null;
-
-        
-
+        }       
+       
         return (
         <div className="person-details card">
-            {spinner}
-            {content}
+            <ItemVie item={item} image={image} children={this.props.children}/>
         </div>
         )
     }
