@@ -5,7 +5,7 @@ import SwapiService from '../../services/swapi-serveces';
 import RandomPlanet from '../random-planet';
 import {SwapiServiceProvider} from '../swapi-service-context';
 import {PeoplePage, PlanetPage, StarshipPage, LoginPage, SecretPage} from '../pages';
-import { BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './app.css';
 import { StarshipDetails } from '../sw-components';
 
